@@ -3,13 +3,11 @@
   "name": "eClean",
   "version": "1.0",
   "description": "Finds trivial frontend errors on the website.",
+  "action" : {
+    "default_popup" : "popup.html"
+  },
   "content_scripts": [
-    {
-      "js": ["scripts/content.js"],
-      "matches": [
-        "https://developer.chrome.com/docs/extensions/*",
-        "https://developer.chrome.com/docs/webstore/*"
-      ]
-    }
+    {   "matches": ["<all_urls>"],
+        "js" : ["popup.js"]}
   ]
 }
