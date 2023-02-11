@@ -80,17 +80,36 @@ Typo = function (dictionary, affData, wordsData, settings) {
 			setup();
 		}
 		// Loading data for Chrome extentions.
+		else if (typeof window !== 'undefined' && 'chrome' in window && 'extension' in window.chrome && 'getURL' in window.chrome.extension) {
+			if (settings.dictionaryPath) {
+				path = settings.dictionaryPath;
+			}
+			else {
+				path = "typo/dictionaries";
+			}
+			
+			if (!affData) readDataFile(chrome.extension.getURL(path + "/" + dictionary + "/" + dictionary + ".aff"), setAffData);
+			if (!wordsData) readDataFile(chrome.extension.getURL(path + "/" + dictionary + "/" + dictionary + ".dic"), setWordsData);
+		}
 		else {
-			path = 'https://raw.githubusercontent.com/cfinke/Typo.js/master/typo/dictionaries/';
-
+			if (settings.dictionaryPath) {
+				path = settings.dictionaryPath;
+			}
+			else if (typeof __dirname !== 'undefined') {
+				path = __dirname + '/dictionaries';
+			}
+			else {
+				path = './dictionaries';
+			}
+			
 			if (!affData) readDataFile(path + "/" + dictionary + "/" + dictionary + ".aff", setAffData);
 			if (!wordsData) readDataFile(path + "/" + dictionary + "/" + dictionary + ".dic", setWordsData);
 		}
 	}
 	
 	function readDataFile(url, setFunc) {
-		console.log("Loading file: " + url);
 		var response = self._readFile(url, null, settings.asyncLoad);
+		
 		if (settings.asyncLoad) {
 			response.then(function(data) {
 				setFunc(data);
@@ -207,56 +226,6 @@ Typo.prototype = {
 	 *          always returned.
 	 */
 	
-	// _readFile : function (path, charset, async) {
-	// 	charset = charset || "utf8";
-		
-	// 	if (typeof XMLHttpRequest !== 'undefined') {
-	// 		var promise;
-	// 		var req = new XMLHttpRequest();
-	// 		req.open("GET", path, async);
-			
-	// 		if (async) {
-	// 			promise = new Promise(function(resolve, reject) {
-	// 				req.onload = function() {
-	// 					if (req.status === 200) {
-	// 						resolve(req.responseText);
-	// 					}
-	// 					else {
-	// 						reject(req.statusText);
-	// 					}
-	// 				};
-					
-	// 				req.onerror = function() {
-	// 					reject(req.statusText);
-	// 				}
-	// 			});
-	// 		}
-		
-	// 		if (req.overrideMimeType)
-	// 			req.overrideMimeType("text/plain; charset=" + charset);
-		
-	// 		req.send(null);
-			
-	// 		return async ? promise : req.responseText;
-	// 	}
-	// 	else if (typeof require !== 'undefined') {
-	// 		// Node.js
-	// 		var fs = require("fs");
-			
-	// 		try {
-	// 			if (fs.existsSync(path)) {
-	// 				return fs.readFileSync(path, charset);
-	// 			}
-	// 			else {
-	// 				console.log("Path " + path + " does not exist.");
-	// 			}
-	// 		} catch (e) {
-	// 			console.log(e);
-	// 			return '';
-	// 		}
-	// 	}
-	// },
-
 	_readFile : function (path, charset, async) {
 		charset = charset || "utf8";
 		
@@ -272,15 +241,13 @@ Typo.prototype = {
 							resolve(req.responseText);
 						}
 						else {
-							console.error("Failed to load " + path + " with status " + req.status);
 							reject(req.statusText);
 						}
 					};
 					
 					req.onerror = function() {
-						console.error("Failed to load " + path + " with error " + req.statusText);
 						reject(req.statusText);
-					};
+					}
 				});
 			}
 		
@@ -300,15 +267,14 @@ Typo.prototype = {
 					return fs.readFileSync(path, charset);
 				}
 				else {
-					console.error("Path " + path + " does not exist.");
+					console.log("Path " + path + " does not exist.");
 				}
 			} catch (e) {
-				console.error(e);
+				console.log(e);
 				return '';
 			}
 		}
 	},
-	
 	
 	/**
 	 * Parse the rules out from a .aff file.
@@ -1057,14 +1023,11 @@ var text = el.innerText || el.textContent;
 
 var dictionary = new Typo("en_US");
 
-var words = text.match(/\b\w+\b/g);
-for (var i = 0; i < words.length; i++) {
-    var is_spelled_correctly = dictionary.check(words[i]);
-	if (!is_spelled_correctly)
-    	console.log("Is '" + words[i] + "' spelled correctly? " + is_spelled_correctly);
+var words = text.split(" ");
+for (var i = 0; i < words.length - 1; i++) {
+    var is_spelled_correctly = dictionary.check(words[i])
+    console.log( "Is this spelled correctly? " + is_spelled_correctly + " : " + words[i] );
+
 }
-
-
-
 console.log("working")
 
