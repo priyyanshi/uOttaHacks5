@@ -1018,6 +1018,23 @@ if (typeof module !== 'undefined') {
 
 // this is where our code begins
 
+//for seo, check for meta data and image alt
+
+//get metadata description
+var metadata = document.querySelector('meta[name="description"]').content;
+if (metadata.length == 0){
+	console.log('ERROR - NO METADATA DESCRIPTION FOR PLATFORM FOUND')
+}
+//get images and check if they have alt text to describe them
+var images = document.getElementsByTagName('img');
+for (var i = 0; i < images.length; i++) {
+    var alt_text = images[i].alt;
+    if (alt_text.length==0){
+		console.log('ERROR - NO ALT TEXT ON IMAGE ' + images[i].src)
+	}
+
+}
+
 var el = document.body; 
 var text = el.innerText || el.textContent;
 
