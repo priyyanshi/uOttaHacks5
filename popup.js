@@ -1,12 +1,18 @@
-// console.log("hello")
+// Popup includes list of frontend bugs and button redirects.
 
-// Simple alert:
-// Reference: https://medium.com/tech-tajawal/build-a-simple-google-chrome-extension-in-few-minutes-1f13b600e83e
 document.addEventListener('DOMContentLoaded', function() {
-  var checkPageButton = document.getElementById('clickit');
-  checkPageButton.addEventListener('click', function() {
+  var DetailsButton = document.getElementById('Details');
+  var MessageButton = document.getElementById('Message');
 
-    alert("Hello! This is a list of frontend bugs!")
+  // Button to redirect to eClean website.
+  DetailsButton.addEventListener('click', function() {
+    alert("This is where redirect to website occurs.");
+    console.log("This is where redirect to website occurs.");
+  }, false);
 
+  // Button to redirect to Twilio API calls.
+  MessageButton.addEventListener('click', function() {
+    alert("This is where call to Twilio occurs.");
+    console.log("This is where call to Twilio occurs.");
   }, false);
 }, false);
