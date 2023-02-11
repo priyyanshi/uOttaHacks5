@@ -1017,24 +1017,7 @@ if (typeof module !== 'undefined') {
 
 
 // this is where our code begins
-
-//for seo, check for meta data and image alt
-
-//get metadata description
-var metadata = document.querySelector('meta[name="description"]').content;
-if (metadata.length == 0){
-	console.log('ERROR - NO METADATA DESCRIPTION FOR PLATFORM FOUND')
-}
-//get images and check if they have alt text to describe them
-var images = document.getElementsByTagName('img');
-for (var i = 0; i < images.length; i++) {
-    var alt_text = images[i].alt;
-    if (alt_text.length==0){
-		console.log('ERROR - NO ALT TEXT ON IMAGE ' + images[i].src)
-	}
-
-}
-
+/*
 var el = document.body; 
 var text = el.innerText || el.textContent;
 
@@ -1046,12 +1029,30 @@ for (var i = 0; i < words.length - 1; i++) {
     console.log( "Is this spelled correctly? " + is_spelled_correctly + " : " + words[i] );
 
 }
-console.log("working")
-
+console.log("working")*/
 
 // Popup includes list of frontend bugs and button redirects.
 
 document.addEventListener('DOMContentLoaded', function() {
+	//Create list of errors/bugs
+	(async () => {
+		const [tab] = await chrome.tabs.query({active: true, lastFocusedWindow: true});
+		const response = await chrome.tabs.sendMessage(tab.id, {greeting: "hello"});
+		if (response.metadata == 0){
+		   var node = document.createElement('li');
+		   const no_meta = document.createTextNode('ERROR - NO METADATA DESCRIPTION FOR PLATFORM FOUND');
+		   node.appendChild(no_meta)
+		   var errors_list = document.querySelector('ul');
+		   errors_list.appendChild(node);
+
+		}
+		for (var i = 0; i < response.images.length; i++) {
+			var node = document.createElement('li');
+			node.appendChild(document.createTextNode('ERROR - NO ALT TEXT ON IMAGE ' + response.images[i]));
+			var errors_list = document.querySelector('ul');
+			errors_list.appendChild(node);
+		}
+   })();
   var DetailsButton = document.getElementById('Details');
   var MessageButton = document.getElementById('Message');
 

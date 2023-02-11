@@ -8,6 +8,10 @@
   },
   "content_scripts": [
     {   "matches": ["<all_urls>"],
-        "js" : ["popup.js"]}
-  ]
+        "js" : ["content-script.js"]}
+  ],
+  "permissions": [
+    "activeTab",
+    "scripting"
+]
 }
