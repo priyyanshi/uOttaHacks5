@@ -1,0 +1,6 @@
+eClean
+
+Here is a list of front-end bugs on your eCommerce webpage:
+
+• ERROR - Missing metadata description
+• ERROR - NO ALT TEXT ON IMAGE https://m.media-amazon.com/images/G/15/gno/sprites/nav-sprite-global-1x-hm-dsk-reorg._CB405936603_.png
