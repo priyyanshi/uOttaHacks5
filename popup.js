@@ -1,4 +1,5 @@
 // Popup includes list of frontend bugs and button redirects.
+var all_data = [];
 
 document.addEventListener('DOMContentLoaded', function() {
 	//Create list of errors/bugs
@@ -11,19 +12,21 @@ document.addEventListener('DOMContentLoaded', function() {
 		   node.appendChild(no_meta)
 		   var errors_list = document.querySelector('ul');
 		   errors_list.appendChild(node);
-
+		   all_data.push('- ERROR: NO METADATA DESCRIPTION FOR PLATFORM FOUND\n');
 		}
 		for (var i = 0; i < response.typos.length; i++) {
 			var node = document.createElement('li');
 			node.appendChild(document.createTextNode('TYPO - ' + response.typos[i]));
 			var errors_list = document.querySelector('ul');
 			errors_list.appendChild(node);
+			all_data.push('- TYPO:' + response.typos[i] + '\n');
 		}
 		for (var i = 0; i < response.images.length; i++) {
 			var node = document.createElement('li');
 			node.appendChild(document.createTextNode('ERROR - NO ALT TEXT ON IMAGE ' + response.images[i]));
 			var errors_list = document.querySelector('ul');
 			errors_list.appendChild(node);
+			all_data.push('- ERROR: NO ALT TEXT ON IMAGE ' + response.images[i] + '\n');
 		}
    })();
    var MessageButton = document.getElementById('Message');
@@ -33,9 +36,10 @@ document.addEventListener('DOMContentLoaded', function() {
 	var DetailsButton = document.getElementById('Details');
 
 	DetailsButton.onclick = function () {
-	chrome.tabs.create({
-		url: "https://patelpriyanshi.wixsite.com/eclean"
-	});
+		var url = "https://patelpriyanshi.wixsite.com/eclean?issue_title=Frontend%20UI%20Issues&bugs=" + all_data.join("%0A");
+		chrome.tabs.create({
+			url: url
+		});
 	};
   
   // Button to redirect to Twilio API calls.
