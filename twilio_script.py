@@ -5,12 +5,12 @@ import os
 from twilio.rest import Client
 
 # Configuration file variables:
-account_sid = '' # Need to configurate.
-auth_token = '' # Need to configurate.
-from_number = '' # Need to configurate.
-to_number = '' # Need to configurate.
+account_sid = '' # Need to configure.
+auth_token = '' # Need to configure.
+from_number = '' # Need to configure.
+to_number = '' # Need to configure.
 
-def message_developers()):
+def message_developers():
     # Find your Account SID and Auth Token at twilio.com/console
     # and set the environment variables. See http://twil.io/secure
     client = Client(account_sid, auth_token)
@@ -39,5 +39,5 @@ def call_developers(message_to_send):
 
     # print(call.sid)
 
-message_developers("This is a message from eClean") # Put this message in a text file.
+message_developers()
 # call_developers("This is a message from eClean") # Put this message in a text file.
